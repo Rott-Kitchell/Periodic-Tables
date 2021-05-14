@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import { next, today } from "../utils/date-time";
 
-function AddEditRes({ setReservations, setSingleRes, singleRes }) {
+export default function AddEditRes({ setSingleRes, singleRes }) {
   const history = useHistory();
   const initialFormState = {
     first_name: "",
@@ -41,43 +41,59 @@ function AddEditRes({ setReservations, setSingleRes, singleRes }) {
       <h2>New Reservation</h2>
       <form onSubmit={handleSubmit}>
         <label className="form-label" htmlFor="first_name">
-          First name:
+          First name:&nbsp;
         </label>
         <input
           className="form-control"
           onChange={handleChange}
           id="first_name"
           name="first_name"
+          value={formData.first_name}
         />
         <label className="form-label" htmlFor="last_name">
-          Last name:
+          Last name:&nbsp;
         </label>
         <input
           className="form-control"
           onChange={handleChange}
           id="last_name"
           name="last_name"
+          value={formData.last_name}
         />
         <label className="form-label" htmlFor="mobile_number">
-          Mobile number:
+          Mobile number:&nbsp;
         </label>
-        <input onChange={handleChange} name="mobile_number" />
+        <input
+          onChange={handleChange}
+          name="mobile_number"
+          value={formData.mobile_number}
+        />
         <label className="form-label" htmlFor="date_of_reservation">
-          Date of reservation:
+          Date of reservation:&nbsp;
         </label>
-        <input onChange={handleChange} type="date" name="date_of_reservation" />
+        <input
+          onChange={handleChange}
+          type="date"
+          name="date_of_reservation"
+          value={formData.date_of_reservation}
+        />
         <label className="form-label" htmlFor="time_of_reservation">
-          Time of reservation:
+          Time of reservation:&nbsp;
         </label>
-        <input onChange={handleChange} type="time" name="time_of_reservation" />
+        <input
+          onChange={handleChange}
+          type="time"
+          name="time_of_reservation"
+          value={formData.time_of_reservation}
+        />
         <label className="form-label" htmlFor="people">
-          Number of people:
+          Number of people:&nbsp;
         </label>
         <input onChange={handleChange} type="integer" min="1" name="people" />
         <br />
-        <Link className="btn btn-secondary" to="/">
+        <button className="btn btn-secondary" onClick={history.goBack}>
           Cancel
-        </Link>
+        </button>
         <button className="btn btn-primary" type="submit">
           Submit
         </button>
@@ -85,5 +101,3 @@ function AddEditRes({ setReservations, setSingleRes, singleRes }) {
     </div>
   );
 }
-
-export default AddEditRes;
