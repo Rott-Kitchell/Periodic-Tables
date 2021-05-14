@@ -5,7 +5,6 @@ const reservationsService = require("./reservations.service");
  */
 async function list(req, res, next) {
   const reservationDate = req.query.date;
-  console.log(reservationDate, "resdate");
   const data = reservationDate
     ? await reservationsService.listByDate(reservationDate)
     : await reservationsService.list();
@@ -13,8 +12,7 @@ async function list(req, res, next) {
 }
 
 async function create(req, res, next) {
-  let reservation = req.body.data;
-  console.log(reservation, "create");
+  let reservation = req.body;
   const data = await reservationsService.create(reservation);
   res.status(201).json({ data });
 }

@@ -9,8 +9,8 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
     first_name: "",
     last_name: "",
     mobile_number: "",
-    date_of_reservation: next(today()),
-    time_of_reservation: "12:00:00",
+    reservation_date: next(today()),
+    reservation_time: "12:00:00",
     people: 1,
   };
   const [formData, setFormData] = useState(initialFormState);
@@ -32,7 +32,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           return { ...origRes, formData };
         })
       )
-      .then(history.push(`/dashboard?date=${formData.date_of_reservation}`))
+      .then(history.push(`/dashboard?date=${formData.reservation_date}`))
       .catch((error) => console.log(error));
   };
 
@@ -68,23 +68,23 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           name="mobile_number"
           value={formData.mobile_number}
         />
-        <label className="form-label" htmlFor="date_of_reservation">
+        <label className="form-label" htmlFor="reservation_date">
           Date of reservation:&nbsp;
         </label>
         <input
           onChange={handleChange}
           type="date"
-          name="date_of_reservation"
-          value={formData.date_of_reservation}
+          name="reservation_date"
+          value={formData.reservation_date}
         />
-        <label className="form-label" htmlFor="time_of_reservation">
+        <label className="form-label" htmlFor="reservation_time">
           Time of reservation:&nbsp;
         </label>
         <input
           onChange={handleChange}
           type="time"
-          name="time_of_reservation"
-          value={formData.time_of_reservation}
+          name="reservation_time"
+          value={formData.reservation_time}
         />
         <label className="form-label" htmlFor="people">
           Number of people:&nbsp;
