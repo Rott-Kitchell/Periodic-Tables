@@ -32,7 +32,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           return { ...origRes, formData };
         })
       )
-      //.then(history.push(`/`))
+      .then(history.push(`/dashboard?date=${formData.date_of_reservation}`))
       .catch((error) => console.log(error));
   };
 
