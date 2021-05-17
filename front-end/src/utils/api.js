@@ -80,10 +80,11 @@ export async function listReservations(params, signal) {
  */
 export async function createReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
+  const data = JSON.stringify(reservation);
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify(reservation),
+    body: data,
     signal,
   };
   return await fetchJson(url, options);

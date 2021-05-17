@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import ErrorAlert from "../layout/ErrorAlert";
 import { createReservation } from "../utils/api";
-import { next, today } from "../utils/date-time";
+import validateDate from "./validateDate";
 
 export default function AddEditRes({ setSingleRes, singleRes }) {
+  const [error, setError] = useState(null);
+  const [dateErrors, setDateErrors] = useState([]);
   const history = useHistory();
   const initialFormState = {
     first_name: "",
     last_name: "",
     mobile_number: "",
-    reservation_date: next(today()),
-    reservation_time: "12:00:00",
+    reservation_date: "",
+    reservation_time: "",
     people: 1,
   };
   const [formData, setFormData] = useState(initialFormState);
@@ -25,20 +28,25 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
   let handleSubmit = (event) => {
     event.preventDefault();
 
-    createReservation(formData)
-      .then(setFormData({ ...initialFormState }))
-      .then(
-        setSingleRes((origRes) => {
-          return { ...origRes, formData };
-        })
-      )
-      .then(history.push(`/dashboard?date=${formData.reservation_date}`))
-      .catch((error) => console.log(error));
+    if (validateDate(formData, setDateErrors)) {
+      createReservation(formData)
+        .then(setFormData({ ...initialFormState }))
+        .then(history.push(`/dashboard?date=${formData.reservation_date}`))
+        .catch(setError);
+    }
+  };
+
+  const errors = () => {
+    return dateErrors.map((dateerror, idx) => (
+      <ErrorAlert key={idx} error={dateerror} />
+    ));
   };
 
   return (
     <div>
       <h2>New Reservation</h2>
+      <ErrorAlert error={error} />
+      {errors()}
       <form onSubmit={handleSubmit}>
         <label className="form-label" htmlFor="first_name">
           First name:&nbsp;
@@ -49,6 +57,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           id="first_name"
           name="first_name"
           value={formData.first_name}
+          required={true}
         />
         <label className="form-label" htmlFor="last_name">
           Last name:&nbsp;
@@ -59,14 +68,19 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           id="last_name"
           name="last_name"
           value={formData.last_name}
+          required={true}
         />
         <label className="form-label" htmlFor="mobile_number">
           Mobile number:&nbsp;
         </label>
         <input
+          type="tel"
           onChange={handleChange}
           name="mobile_number"
           value={formData.mobile_number}
+          placeholder="123-456-7890"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          required={true}
         />
         <label className="form-label" htmlFor="reservation_date">
           Date of reservation:&nbsp;
@@ -74,22 +88,36 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         <input
           onChange={handleChange}
           type="date"
+          placeholder="YYYY-MM-DD"
+          pattern="\d{4}-\d{2}-\d{2}"
           name="reservation_date"
           value={formData.reservation_date}
+          required={true}
         />
         <label className="form-label" htmlFor="reservation_time">
           Time of reservation:&nbsp;
         </label>
         <input
-          onChange={handleChange}
+          input
           type="time"
+          placeholder="HH:MM"
+          pattern="[0-9]{2}:[0-9]{2}"
+          onChange={handleChange}
           name="reservation_time"
           value={formData.reservation_time}
+          required={true}
         />
         <label className="form-label" htmlFor="people">
           Number of people:&nbsp;
         </label>
-        <input onChange={handleChange} type="integer" min="1" name="people" />
+        <input
+          onChange={handleChange}
+          type="number"
+          min="1"
+          name="people"
+          value={formData.people}
+          required={true}
+        />
         <br />
         <button className="btn btn-secondary" onClick={history.goBack}>
           Cancel
