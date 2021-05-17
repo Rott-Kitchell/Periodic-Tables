@@ -1,9 +1,12 @@
 export default function validateDate(formData, setDateErrors) {
   console.log(formData);
   const reserveDate = new Date(
-    `${formData.reservation_date} ${formData.reservation_time} GMT-0500`
-  );
-  console.log(reserveDate, "reserve");
+      `${formData.reservation_date} ${formData.reservation_time} GMT-0500`
+    ),
+    start = new Date(`${formData.reservation_date} 10:30:00 GMT-0500`),
+    end = new Date(`${formData.reservation_date} 21:30:00 GMT-0500`);
+
+  console.log(reserveDate.getHours(), reserveDate.getMinutes(), "reserve");
 
   const todaysDate = new Date();
 
@@ -18,6 +21,16 @@ export default function validateDate(formData, setDateErrors) {
   if (reserveDate < todaysDate) {
     foundErrors.push({
       message: "Reservations cannot be made in the past.",
+    });
+  }
+
+  console.log(start, end, reserveDate);
+  if (
+    reserveDate.getTime() < start.getTime() ||
+    reserveDate.getTime() > end.getTime()
+  ) {
+    foundErrors.push({
+      message: "Reservations cannot be made outside of 10:30am to 9:30pm.",
     });
   }
   setDateErrors(foundErrors);
