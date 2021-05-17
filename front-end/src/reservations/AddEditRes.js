@@ -88,7 +88,6 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         <input
           onChange={handleChange}
           type="date"
-          placeholder="YYYY-MM-DD"
           pattern="\d{4}-\d{2}-\d{2}"
           name="reservation_date"
           value={formData.reservation_date}
@@ -100,7 +99,6 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         <input
           input
           type="time"
-          placeholder="HH:MM"
           pattern="[0-9]{2}:[0-9]{2}"
           onChange={handleChange}
           name="reservation_time"
