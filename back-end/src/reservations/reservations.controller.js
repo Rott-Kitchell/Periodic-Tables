@@ -1,4 +1,5 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const reservationValidator = require("../util/reservationValidator");
 const reservationsService = require("./reservations.service");
 /**
  * List handler for reservation resources
@@ -14,41 +15,13 @@ const validFields = new Set([
 
 function hasValidFields(req, res, next) {
   const { data = {} } = req.body;
-  const dataKeys = Object.keys(data);
-  const dataValues = Object.values(data);
-  console.log(dataValues.includes(""));
-  if (!dataKeys || dataValues.includes("")) {
-    return next({
-      status: 400,
-      message: `No/Incomplete data`,
-    });
-  }
-
-  const invalidFields = dataKeys.filter((field) => !validFields.has(field));
-
+  const invalidFields = reservationValidator(data, validFields);
   if (invalidFields.length) {
     return next({
       status: 400,
       message: `Invalid field(s): ${invalidFields.join(", ")}`,
     });
   }
-  const missingFields = [];
-  validFields.forEach((field) => {
-    if (!dataKeys.includes(field)) {
-      missingFields.push(field);
-    }
-  });
-  if (missingFields.length)
-    return next({
-      status: 400,
-      message: `Missing field(s): ${missingFields.join(", ")}`,
-    });
-
-  if (Number(data.people) <= 0 || isNaN(data.people))
-    return next({
-      status: 400,
-      message: `Party size must be 1 or more`,
-    });
 
   next();
 }

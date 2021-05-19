@@ -44,7 +44,6 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
   };
 
   let phoneNumberFormatter = ({ target }) => {
-    console.log(target);
     const formattedInputValue = formatPhoneNumber(target.value);
     setFormData({
       ...formData,
@@ -58,7 +57,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
       <ErrorAlert error={error} />
       {errors()}
       <form onSubmit={handleSubmit}>
-        {/* <label className="form-label" htmlFor="first_name">
+        <label className="form-label" htmlFor="first_name">
           First name:&nbsp;
         </label>
         <input
@@ -109,7 +108,6 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           Time of reservation:&nbsp;
         </label>
         <input
-          input
           type="time"
           pattern="[0-9]{2}:[0-9]{2}"
           onChange={handleChange}
@@ -136,7 +134,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         </button>
         <button className="btn btn-primary" type="submit">
           Submit
-        </button> */}
+        </button>
       </form>
     </div>
   );
