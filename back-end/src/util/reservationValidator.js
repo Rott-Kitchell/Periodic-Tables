@@ -1,14 +1,6 @@
 function reservationValidator(data, validFields) {
   const dataMap = new Map(Object.entries(data));
-
   const dataKeys = Object.keys(data);
-  if (!dataMap.keys()) {
-    return next({
-      status: 400,
-      message: `No/Incomplete data`,
-    });
-  }
-
   const invalidFields = [];
 
   dataMap.forEach((value, key) => {
