@@ -78,13 +78,13 @@ export async function listReservations(params, signal) {
  * @returns {Promise<reservartion>}
  *  a promise that resolves the saved deck, which will now have an `id` property.
  */
-export async function createReservation(reservation, signal) {
+export async function createReservation(data, signal) {
   const url = `${API_BASE_URL}/reservations`;
-  const data = JSON.stringify(reservation);
+  console.log(JSON.stringify(data));
   const options = {
     method: "POST",
     headers,
-    body: data,
+    body: JSON.stringify(data),
     signal,
   };
   return await fetchJson(url, options);

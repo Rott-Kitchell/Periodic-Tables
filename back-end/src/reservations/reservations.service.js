@@ -12,6 +12,7 @@ function create(reservation) {
   return knex("reservations")
     .insert(reservation)
     .returning("*")
+    .orderBy("reservation_time")
     .then((createdRecords) => createdRecords[0]);
 }
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import { createReservation } from "../utils/api";
+import formatPhoneNumber from "../utils/phoneNumberFormatter";
 import validateDate from "./validateDate";
 
 export default function AddEditRes({ setSingleRes, singleRes }) {
@@ -42,13 +43,22 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
     ));
   };
 
+  let phoneNumberFormatter = ({ target }) => {
+    console.log(target);
+    const formattedInputValue = formatPhoneNumber(target.value);
+    setFormData({
+      ...formData,
+      mobile_number: formattedInputValue,
+    });
+  };
+
   return (
     <div>
       <h2>New Reservation</h2>
       <ErrorAlert error={error} />
       {errors()}
       <form onSubmit={handleSubmit}>
-        <label className="form-label" htmlFor="first_name">
+        {/* <label className="form-label" htmlFor="first_name">
           First name:&nbsp;
         </label>
         <input
@@ -75,8 +85,9 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         </label>
         <input
           type="tel"
-          onChange={handleChange}
+          onChange={phoneNumberFormatter}
           name="mobile_number"
+          id="mobile_number"
           value={formData.mobile_number}
           placeholder="123-456-7890"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -90,6 +101,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           type="date"
           pattern="\d{4}-\d{2}-\d{2}"
           name="reservation_date"
+          id="reservation_date"
           value={formData.reservation_date}
           required={true}
         />
@@ -102,6 +114,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           pattern="[0-9]{2}:[0-9]{2}"
           onChange={handleChange}
           name="reservation_time"
+          id="reservation_time"
           value={formData.reservation_time}
           required={true}
         />
@@ -113,6 +126,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           type="number"
           min="1"
           name="people"
+          id="people"
           value={formData.people}
           required={true}
         />
@@ -122,7 +136,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         </button>
         <button className="btn btn-primary" type="submit">
           Submit
-        </button>
+        </button> */}
       </form>
     </div>
   );
