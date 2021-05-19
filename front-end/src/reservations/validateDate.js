@@ -29,9 +29,10 @@ export default function validateDate(formData, setDateErrors) {
       message: "Reservations cannot be made outside of 10:30am to 9:30pm.",
     });
   }
-  console.log(foundErrors);
+
   setDateErrors(foundErrors);
 
+  console.log(foundErrors.length > 0, "validate");
   if (foundErrors.length > 0) {
     return false;
   }

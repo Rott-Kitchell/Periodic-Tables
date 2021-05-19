@@ -19,11 +19,18 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
   };
   const [formData, setFormData] = useState(initialFormState);
 
-  const handleChange = ({ target }) => {
-    setFormData({
-      ...formData,
-      [target.name]: target.value,
-    });
+  let handleChange = ({ target }) => {
+    if (target.name === "people") {
+      setFormData({
+        ...formData,
+        [target.name]: Number(target.value),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [target.name]: target.value,
+      });
+    }
   };
 
   let handleSubmit = (event) => {
@@ -89,7 +96,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           id="mobile_number"
           value={formData.mobile_number}
           placeholder="123-456-7890"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           required={true}
         />
         <label className="form-label" htmlFor="reservation_date">
@@ -122,7 +129,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
         <input
           onChange={handleChange}
           type="number"
-          min="1"
+          min={1}
           name="people"
           id="people"
           value={formData.people}
