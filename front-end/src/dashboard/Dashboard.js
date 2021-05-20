@@ -3,6 +3,8 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { next, today, previous } from "../utils/date-time";
+import ResList from "./ResList";
+import TableList from "./TableList";
 
 /**
  * Defines the dashboard page.
@@ -10,8 +12,7 @@ import { next, today, previous } from "../utils/date-time";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
-  const [reservations, setReservations] = useState();
+function Dashboard({ date, tables, reservations, setReservations }) {
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
 
@@ -28,34 +29,46 @@ function Dashboard({ date }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
-      </div>
-
-      <div className="btn-group" role="group" aria-label="Basic example">
-        <button
-          type="button"
-          onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
-        >
-          Previous
-        </button>
-        <button
-          type="button"
-          onClick={() => history.push(`/dashboard?date=${today()}`)}
-        >
-          Today
-        </button>
-        <button
-          type="button"
-          onClick={() => history.push(`/dashboard?date=${next(date)}`)}
-        >
-          Next
-        </button>
-      </div>
+      <h1 className="text-center">Dashboard</h1>
       <ErrorAlert error={reservationsError} />
-      <br />
-      {JSON.stringify(reservations)}
+      <div className="row">
+        <div className="col">
+          <h4 className="mb-0 text-center">Reservations for {date}</h4>
+          <div className="text-center">
+            <div
+              className="btn-group btn-group-lg"
+              role="group"
+              aria-label="Basic example"
+            ></div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => history.push(`/dashboard?date=${today()}`)}
+            >
+              Today
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => history.push(`/dashboard?date=${next(date)}`)}
+            >
+              Next
+            </button>
+          </div>
+          <ResList reservations={reservations} />
+        </div>
+        <div className="col">
+          <h4 className="mb-0 text-center">Tables</h4>
+          <TableList tables={tables} />
+        </div>
+      </div>
     </main>
   );
 }

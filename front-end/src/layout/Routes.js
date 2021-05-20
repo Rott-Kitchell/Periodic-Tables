@@ -5,6 +5,8 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import AddEditRes from "../reservations/AddEditRes";
+import AddEditTable from "../tables/AddEditTable";
+import Seat from "../reservations/Seat";
 
 /**
  * Defines all the routes for the application.
@@ -15,8 +17,8 @@ import AddEditRes from "../reservations/AddEditRes";
  */
 function Routes() {
   const query = useQuery();
-
-  const [singleRes, setSingleRes] = useState();
+  const [reservations, setReservations] = useState();
+  const [tables, setTables] = useState();
   const [date, setDate] = useState();
 
   useEffect(() => {
@@ -35,11 +37,22 @@ function Routes() {
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
+      <Route exact={true} path="/reservations/:reservation_id/seat">
+        <Seat tables={tables} reservations={reservations} />
+      </Route>
       <Route exact={true} path="/reservations/new">
-        <AddEditRes setSingleRes={setSingleRes} singleRes={singleRes} />
+        <AddEditRes />
+      </Route>
+      <Route exact={true} path="/tables/new">
+        <AddEditTable setTables={setTables} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} />
+        <Dashboard
+          date={date}
+          tables={tables}
+          reservations={reservations}
+          setReservations={setReservations}
+        />
       </Route>
       <Route>
         <NotFound />

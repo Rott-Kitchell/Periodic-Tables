@@ -69,7 +69,7 @@ export async function listReservations(params, signal) {
 }
 
 /**
- * Saves reservation to the database (public/data/db.json).
+ * Saves reservation to the database.
  * There is no validation done on the deck object, any object will be saved.
  * @param reservation
  *  the deck to save, which must not have an `id` property
