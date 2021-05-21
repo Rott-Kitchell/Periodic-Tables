@@ -19,6 +19,13 @@ function tableValidator(data, validFields) {
   ) {
     if (!invalidFields.includes("capacity")) invalidFields.push("capacity");
   }
+  let tableName;
+  if (dataMap.get("table_name"))
+    tableName = dataMap.get("table_name").split("");
+
+  if (!dataMap.get("table_name") || tableName.length < 2) {
+    if (!invalidFields.includes("table_name")) invalidFields.push("table_name");
+  }
 
   return invalidFields;
 }

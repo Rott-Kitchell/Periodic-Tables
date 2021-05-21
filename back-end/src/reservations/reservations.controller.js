@@ -1,9 +1,17 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reservationValidator = require("../util/reservationValidator");
 const reservationsService = require("./reservations.service");
-/**
- * List handler for reservation resources
- */
+
+async function reservationExists(req, res, next) {
+  const { reservationId } = req.params;
+  const reservation = await reservationsService.read(reservationId);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  return next({ status: 404, message: `Reservation cannot be found.` });
+}
+
 const validFields = new Set([
   "first_name",
   "last_name",
@@ -70,7 +78,13 @@ async function create(req, res, next) {
   res.status(201).json({ data });
 }
 
+async function read(req, res, next) {
+  const { reservation } = res.locals;
+  res.json({ data: reservation });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [hasValidFields, asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), read],
 };

@@ -1,10 +1,7 @@
 const knex = require("../db/connection");
 
 function read(tableId) {
-  return knex("tables as t")
-    .join("reservations as r", "r.reservation_id", "t.reservation_id")
-    .where({ table_id: tableId })
-    .first();
+  return knex("tables as t").where({ table_id: tableId }).first();
 }
 
 function list() {
