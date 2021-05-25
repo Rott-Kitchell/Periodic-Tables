@@ -7,6 +7,10 @@ router
   .get(controller.list)
   .post(controller.create)
   .all(methodNotAllowed);
-router.route("/:tableId/seat").put(controller.update).all(methodNotAllowed);
+router
+  .route("/:tableId/seat")
+  .put(controller.update)
+  .delete(controller.freeUpTable)
+  .all(methodNotAllowed);
 
 module.exports = router;

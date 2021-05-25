@@ -154,3 +154,19 @@ export async function readReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
   return await fetchJson(url, { signal });
 }
+
+/**
+ * Deletes the card with the specified `table_id`. since we already have a PUT method in seatResAtTAble, we are using a DELETE with this one
+ * @param table_id
+ *  the id of the table to free up
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to an empty object.
+ */
+export async function freeUpTable(table_id, signal) {
+  console.log("freeUpTable");
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = { method: "DELETE", signal };
+  return await fetchJson(url, options);
+}

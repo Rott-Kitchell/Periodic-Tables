@@ -3,17 +3,17 @@ const tableValidator = require("../util/tableValidator");
 const tablesService = require("./tables.service");
 const reservationsService = require("../reservations/reservations.service");
 
-const validFields = new Set(["table_name", "capacity"]);
+const validFields = new Set(["table_name", "capacity", "reservation_id"]);
 
 async function tableExists(req, res, next) {
   const { tableId } = req.params;
   const table = await tablesService.read(Number(tableId));
-
+  console.log(table);
   if (table) {
     res.locals.table = table;
     return next();
   } else {
-    next({ status: 404, message: "Table cannot be found." });
+    next({ status: 404, message: `Table ${tableId} cannot be found.` });
   }
 }
 
@@ -80,11 +80,31 @@ async function create(req, res) {
   res.status(201).json({ data });
 }
 
+async function freeUpTable(req, res, next) {
+  const { table } = res.locals;
+  if (!table.reservation_id) {
+    return next({
+      status: 400,
+      message: `Table not occupied`,
+    });
+  }
+  updatedTable = {
+    ...table,
+    reservation_id: null,
+  };
+  const newData = await tablesService.update(updatedTable);
+  res.json({ data: newData });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   update: [asyncErrorBoundary(tableExists), asyncErrorBoundary(update)],
   create: [
     asyncErrorBoundary(hasValidFieldsCreate),
     asyncErrorBoundary(create),
+  ],
+  freeUpTable: [
+    asyncErrorBoundary(tableExists),
+    asyncErrorBoundary(freeUpTable),
   ],
 };
