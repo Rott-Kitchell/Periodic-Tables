@@ -38,13 +38,17 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
-        <Seat tables={tables} reservations={reservations} />
+        <Seat
+          tables={tables}
+          reservations={reservations}
+          setTables={setTables}
+        />
       </Route>
       <Route exact={true} path="/reservations/new">
         <AddEditRes />
       </Route>
       <Route exact={true} path="/tables/new">
-        <AddEditTable setTables={setTables} />
+        <AddEditTable />
       </Route>
       <Route path="/dashboard">
         <Dashboard
@@ -52,6 +56,7 @@ function Routes() {
           tables={tables}
           reservations={reservations}
           setReservations={setReservations}
+          setTables={setTables}
         />
       </Route>
       <Route>

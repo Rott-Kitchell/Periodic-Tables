@@ -17,7 +17,8 @@ function Dashboard({ date, tables, reservations, setReservations, setTables }) {
   const [tablesError, setTablesError] = useState(null);
   const history = useHistory();
 
-  useEffect(loadDashboard, [date, setReservations, setTables]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -25,9 +26,9 @@ function Dashboard({ date, tables, reservations, setReservations, setTables }) {
     setTablesError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
-      .then(() => listTables(abortController.signal))
-      .then(setTables)
-      .catch(setTablesError);
+      .catch(setReservationsError);
+
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
 
     return () => abortController.abort();
   }

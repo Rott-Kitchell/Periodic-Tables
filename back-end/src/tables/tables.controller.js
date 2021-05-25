@@ -19,7 +19,7 @@ async function tableExists(req, res, next) {
 
 function hasValidFieldsCreate(req, res, next) {
   const { data = {} } = req.body;
-  console.log(req.body);
+
   const invalidFields = tableValidator(data, validFields);
   if (invalidFields.length) {
     return next({
@@ -31,7 +31,6 @@ function hasValidFieldsCreate(req, res, next) {
 }
 
 async function update(req, res, next) {
-  console.log(req.body);
   let { table } = res.locals;
   if (!req.body.data || !req.body.data.reservation_id) {
     return next({

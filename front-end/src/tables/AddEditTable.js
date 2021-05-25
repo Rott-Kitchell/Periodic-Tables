@@ -4,7 +4,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { createTable } from "../utils/api";
 import validateTable from "./validateTable";
 
-export default function AddEditTable({ setTables }) {
+export default function AddEditTable() {
   const [error, setError] = useState(null);
   const [tableErrors, setTableErrors] = useState([]);
   const history = useHistory();

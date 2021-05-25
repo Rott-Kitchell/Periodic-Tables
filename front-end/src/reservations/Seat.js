@@ -1,28 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
-import { seatResAtTable } from "../utils/api";
+import { listTables, readReservation, seatResAtTable } from "../utils/api";
 
-export default function Seat({ tables, reservations }) {
+export default function Seat({ tables, reservations, setTables }) {
   const initialState = { table_id: 0 };
   const [formData, setFormData] = useState(initialState);
+  const [singleRes, setSingleRes] = useState(initialState);
   const [error, setError] = useState(null);
   const { reservation_id } = useParams();
   const history = useHistory();
 
-  const singleRes = reservations.find((res) => {
-    return res.reservation_id === Number(reservation_id);
-  });
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    readReservation(reservation_id)
+      .then(setSingleRes)
+      .catch((error) => console.log(error));
+    listTables().then(setTables);
+
+    return abortController.abort();
+  }, [reservation_id, setTables]);
 
   let handleSubmit = (event) => {
     event.preventDefault();
+
     if (formData.table_id > 0) {
       seatResAtTable(formData.table_id, reservation_id)
         .then(setFormData(initialState))
+        .then(() => listTables())
+        .then(setTables)
         .then(history.push(`/dashboard`))
         .catch(setError);
     } else {
-      setError({ message: "Not a valid table" });
+      throw new Error({ message: "Not a valid table" });
     }
   };
 
@@ -37,7 +48,11 @@ export default function Seat({ tables, reservations }) {
     tables.map((table) => {
       if (table.reservation_id === null && singleRes.people <= table.capacity) {
         return (
-          <option value={table.table_id} key={table.table_id}>
+          <option
+            name={table.table_id}
+            value={table.table_id}
+            key={table.table_id}
+          >
             {table.table_name} - {table.capacity}
           </option>
         );
@@ -56,7 +71,7 @@ export default function Seat({ tables, reservations }) {
           Select Table:&nbsp;
         </label>
         <select className="form-select" name="table_id" onChange={handleChange}>
-          <option defaultValue>Please choose table:</option>
+          <option defaultValue="">Please choose table:</option>
           {tableMenu}
         </select>
         <button className="btn btn-primary" type="submit">

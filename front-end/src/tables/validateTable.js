@@ -15,7 +15,6 @@ export default function validateTable(formData, setDateErrors) {
 
   setDateErrors(foundErrors);
 
-  console.log(foundErrors.length > 0, "validate");
   if (foundErrors.length > 0) {
     return false;
   }

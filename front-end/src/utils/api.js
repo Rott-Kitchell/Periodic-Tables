@@ -140,3 +140,17 @@ export async function createTable(data, signal) {
   };
   return await fetchJson(url, options);
 }
+
+/**
+ * Retrieves the reservation with the specified `reservationId`
+ * @param reservationId
+ *  the id of the target
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the saved reservation.
+ */
+export async function readReservation(reservationId, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservationId}`;
+  return await fetchJson(url, { signal });
+}
