@@ -22,11 +22,11 @@ export default function ResList({ reservations }) {
                 {first_name}
               </h6>
             </div>
-            <ul class="list-group list-group">
-              <li class="list-group-item">Contact: {mobile_number}</li>
-              <li class="list-group-item">Party size: {people}</li>
-              <li class="list-group-item">Date: {reservation_date}</li>
-              <li class="list-group-item">Time: {reservation_time}</li>
+            <ul className="list-group list-group">
+              <li className="list-group-item">Contact: {mobile_number}</li>
+              <li className="list-group-item">Party size: {people}</li>
+              <li className="list-group-item">Date: {reservation_date}</li>
+              <li className="list-group-item">Time: {reservation_time}</li>
             </ul>
 
             <Link

@@ -7,7 +7,6 @@ const validFields = new Set(["table_name", "capacity"]);
 
 async function tableExists(req, res, next) {
   const { tableId } = req.params;
-
   const table = await tablesService.read(Number(tableId));
 
   if (table) {
@@ -20,6 +19,7 @@ async function tableExists(req, res, next) {
 
 function hasValidFieldsCreate(req, res, next) {
   const { data = {} } = req.body;
+  console.log(req.body);
   const invalidFields = tableValidator(data, validFields);
   if (invalidFields.length) {
     return next({

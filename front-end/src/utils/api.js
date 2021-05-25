@@ -88,3 +88,55 @@ export async function createReservation(data, signal) {
   };
   return await fetchJson(url, options);
 }
+
+/**
+ * Retrieves all existing tables
+ * @returns {Promise<[table]>}
+ *  a promise that resolves to a possibly empty array of tables saved in the database.
+ */
+export async function listTables(signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  return await fetchJson(url, { headers, signal }, []);
+}
+
+/**
+ * Updates an existing deck
+ * @param updatedCard
+ *  the card to save, which must have an `id` property.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated card.
+ */
+
+export async function seatResAtTable(table_id, data) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { reservation_id: data } }),
+  };
+  return await fetchJson(url, options, {});
+}
+
+/**
+ * Creates a new table.
+
+ * @param table
+ *  the card to create, which must not have an `id` property
+ 
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the new table, which will have an `id` property.
+ */
+export async function createTable(data, signal) {
+  // There is a bug in json-server, if you post to /decks/:deckId/cards the associated deckId is a string
+  // and the card is not related to the deck because the data types of the ID's are different.
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}

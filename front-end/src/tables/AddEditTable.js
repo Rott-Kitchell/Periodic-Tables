@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
+import { createTable } from "../utils/api";
+import validateTable from "./validateTable";
 
 export default function AddEditTable({ setTables }) {
   const [error, setError] = useState(null);
+  const [tableErrors, setTableErrors] = useState([]);
   const history = useHistory();
   const initialFormState = {
     table_name: "",
-    capacity: 1,
+    capacity: "",
   };
   const [formData, setFormData] = useState(initialFormState);
 
@@ -27,17 +30,24 @@ export default function AddEditTable({ setTables }) {
 
   let handleSubmit = (event) => {
     event.preventDefault();
+    if (validateTable(formData, setTableErrors))
+      createTable(formData)
+        .then(setFormData({ ...initialFormState }))
+        .then(history.push(`/dashboard`))
+        .catch(setError);
+  };
 
-    setTables(formData)
-      .then(setFormData({ ...initialFormState }))
-      .then(history.push(`/dashboard`))
-      .catch(setError);
+  const errors = () => {
+    return tableErrors.map((tableError, idx) => (
+      <ErrorAlert key={idx} error={tableError} />
+    ));
   };
 
   return (
     <div>
       <h2>New Table</h2>
       <ErrorAlert error={error} />
+      {errors()}
       <form onSubmit={handleSubmit}>
         <label className="form-label" htmlFor="table_name">
           Table Name:&nbsp;
@@ -50,16 +60,16 @@ export default function AddEditTable({ setTables }) {
           value={formData.table_name}
           required={true}
         />
-        <label className="form-label" htmlFor="people">
+        <label className="form-label" htmlFor="capacity">
           Capacity:&nbsp;
         </label>
         <input
           onChange={handleChange}
           type="number"
           min={1}
-          name="people"
-          id="people"
-          value={formData.people}
+          name="capacity"
+          id="capacity"
+          value={formData.capacity}
           required={true}
         />
         <br />
