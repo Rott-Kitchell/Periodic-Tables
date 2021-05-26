@@ -9,7 +9,10 @@ async function reservationExists(req, res, next) {
     res.locals.reservation = reservation;
     return next();
   }
-  return next({ status: 404, message: `Reservation cannot be found.` });
+  return next({
+    status: 404,
+    message: `Reservation ${reservationId} cannot be found.`,
+  });
 }
 
 const validFields = new Set([
@@ -61,6 +64,13 @@ function hasValidFields(req, res, next) {
     });
   }
 
+  if (data.status && data.status !== "booked") {
+    return next({
+      status: 400,
+      message: `Status cannot be ${data.status}`,
+    });
+  }
+
   next();
 }
 
@@ -83,8 +93,41 @@ async function read(req, res, next) {
   res.json({ data: reservation });
 }
 
+async function updateStatus(req, res, next) {
+  const {
+    data: { status },
+  } = req.body;
+  const { reservation } = res.locals;
+  if (reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `a finished reservation cannot be updated`,
+    });
+  }
+
+  if (!["booked", "seated", "finished"].includes(status)) {
+    return next({
+      status: 400,
+      message: `Status cannot be ${status}`,
+    });
+  }
+
+  const updatedRes = {
+    ...reservation,
+    status: status,
+  };
+
+  const newData = await reservationsService.update(updatedRes);
+
+  res.status(200).json({ data: newData });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [hasValidFields, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), read],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(updateStatus),
+  ],
 };

@@ -3,8 +3,12 @@ function reservationValidator(data, validFields) {
   const dataKeys = Object.keys(data);
   const invalidFields = [];
 
+  if (dataKeys.includes("status")) validFields.add("status");
+
   dataMap.forEach((value, key) => {
-    if (value === "" || !validFields.has(key)) invalidFields.push(key);
+    if (value === "" || !validFields.has(key)) {
+      invalidFields.push(key);
+    }
   });
 
   validFields.forEach((field) => {

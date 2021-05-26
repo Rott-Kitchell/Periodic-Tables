@@ -8,7 +8,6 @@ const validFields = new Set(["table_name", "capacity", "reservation_id"]);
 async function tableExists(req, res, next) {
   const { tableId } = req.params;
   const table = await tablesService.read(Number(tableId));
-  console.log(table);
   if (table) {
     res.locals.table = table;
     return next();
@@ -30,7 +29,7 @@ function hasValidFieldsCreate(req, res, next) {
   next();
 }
 
-async function update(req, res, next) {
+async function seatTable(req, res, next) {
   let { table } = res.locals;
   if (!req.body.data || !req.body.data.reservation_id) {
     return next({
@@ -66,7 +65,19 @@ async function update(req, res, next) {
     ...req.body.data,
   };
 
+  if (reservation.status === ("seated" || "finished")) {
+    return next({
+      status: 400,
+      message: `Reservation already ${reservation.status}`,
+    });
+  }
+  const updatedRes = {
+    ...reservation,
+    status: "seated",
+  };
+
   const newData = await tablesService.update(updatedTable);
+  if (newData) await reservationsService.update(updatedRes);
   res.json({ data: newData });
 }
 
@@ -88,17 +99,25 @@ async function freeUpTable(req, res, next) {
       message: `Table not occupied`,
     });
   }
-  updatedTable = {
+  let updatedTable = {
     ...table,
     reservation_id: null,
   };
+  const reservation = await reservationsService.read(
+    req.body.data.reservation_id
+  );
+  const updatedRes = {
+    ...reservation,
+    status: "finished",
+  };
   const newData = await tablesService.update(updatedTable);
+  if (newData) await reservationsService.update(updatedRes);
   res.json({ data: newData });
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  update: [asyncErrorBoundary(tableExists), asyncErrorBoundary(update)],
+  update: [asyncErrorBoundary(tableExists), asyncErrorBoundary(seatTable)],
   create: [
     asyncErrorBoundary(hasValidFieldsCreate),
     asyncErrorBoundary(create),
