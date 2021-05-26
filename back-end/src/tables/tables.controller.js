@@ -3,7 +3,7 @@ const tableValidator = require("../util/tableValidator");
 const tablesService = require("./tables.service");
 const reservationsService = require("../reservations/reservations.service");
 
-const validFields = new Set(["table_name", "capacity", "reservation_id"]);
+const validFields = new Set(["table_name", "capacity"]);
 
 async function tableExists(req, res, next) {
   const { tableId } = req.params;
@@ -23,7 +23,7 @@ function hasValidFieldsCreate(req, res, next) {
   if (invalidFields.length) {
     return next({
       status: 400,
-      message: `Invalid field(s): ${invalidFields.join(", ")}`,
+      message: `Invalid table field(s): ${invalidFields.join(", ")}`,
     });
   }
   next();
@@ -93,6 +93,8 @@ async function create(req, res) {
 
 async function freeUpTable(req, res, next) {
   const { table } = res.locals;
+  console.log(table);
+
   if (!table.reservation_id) {
     return next({
       status: 400,
@@ -103,9 +105,7 @@ async function freeUpTable(req, res, next) {
     ...table,
     reservation_id: null,
   };
-  const reservation = await reservationsService.read(
-    req.body.data.reservation_id
-  );
+  const reservation = await reservationsService.read(table.reservation_id);
   const updatedRes = {
     ...reservation,
     status: "finished",

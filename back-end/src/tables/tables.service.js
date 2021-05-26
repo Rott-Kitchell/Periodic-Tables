@@ -9,7 +9,7 @@ function list() {
 }
 
 function update(updatedTable) {
-  return knex("tables as t")
+  return knex("tables")
     .select("*")
     .where({ table_id: updatedTable.table_id })
     .update(updatedTable, "*")

@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { next, today, previous } from "../utils/date-time";
@@ -12,26 +10,17 @@ import TableList from "./TableList";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date, tables, reservations, setReservations, setTables }) {
-  const [reservationsError, setReservationsError] = useState(null);
-  const [tablesError, setTablesError] = useState(null);
+function Dashboard({
+  date,
+  tables,
+  reservations,
+  setReservations,
+  setTables,
+  tablesError,
+  reservationsError,
+  loadDashboard,
+}) {
   const history = useHistory();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(loadDashboard, [date]);
-
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    setTablesError(null);
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-
-    listTables(abortController.signal).then(setTables).catch(setTablesError);
-
-    return () => abortController.abort();
-  }
 
   return (
     <main>
@@ -73,7 +62,7 @@ function Dashboard({ date, tables, reservations, setReservations, setTables }) {
         </div>
         <div className="col">
           <h4 className="mb-0 text-center">Tables</h4>
-          <TableList tables={tables} />
+          <TableList tables={tables} loadDashboard={loadDashboard} />
         </div>
       </div>
     </main>

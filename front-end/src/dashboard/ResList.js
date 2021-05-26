@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 export default function ResList({ reservations }) {
@@ -11,6 +12,7 @@ export default function ResList({ reservations }) {
         people,
         first_name,
         last_name,
+        status,
       } = res;
       return (
         <div className="card mb-1" key={reservation_id} id={reservation_id}>
@@ -27,14 +29,24 @@ export default function ResList({ reservations }) {
               <li className="list-group-item">Party size: {people}</li>
               <li className="list-group-item">Date: {reservation_date}</li>
               <li className="list-group-item">Time: {reservation_time}</li>
+              <li
+                data-reservation-id-status={reservation_id}
+                className="list-group-item"
+              >
+                Status: {status}
+              </li>
             </ul>
 
-            <Link
-              to={`/reservations/${reservation_id}/seat`}
-              className="btn btn-primary mt-2"
-            >
-              Seat
-            </Link>
+            {status === "booked" ? (
+              <Link
+                to={`/reservations/${reservation_id}/seat`}
+                className="btn btn-primary mt-2"
+              >
+                Seat
+              </Link>
+            ) : (
+              <Fragment />
+            )}
           </div>
         </div>
       );

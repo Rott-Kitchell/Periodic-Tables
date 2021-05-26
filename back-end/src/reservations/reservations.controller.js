@@ -30,7 +30,7 @@ function hasValidFields(req, res, next) {
   if (invalidFields.length) {
     return next({
       status: 400,
-      message: `Invalid field(s): ${invalidFields.join(", ")}`,
+      message: `Invalid reservation field(s): ${invalidFields.join(", ")}`,
     });
   }
   const reserveDate = new Date(

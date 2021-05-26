@@ -3,6 +3,8 @@ function tableValidator(data, validFields) {
   const dataKeys = Object.keys(data);
   const invalidFields = [];
 
+  if (dataKeys.includes("reservation_id")) validFields.add("reservation_id");
+
   dataMap.forEach((value, key) => {
     if (value === "" || !validFields.has(key)) invalidFields.push(key);
   });

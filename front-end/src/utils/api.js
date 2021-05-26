@@ -165,8 +165,29 @@ export async function readReservation(reservationId, signal) {
  *  a promise that resolves to an empty object.
  */
 export async function freeUpTable(table_id, signal) {
-  console.log("freeUpTable");
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
   const options = { method: "DELETE", signal };
   return await fetchJson(url, options);
+}
+
+/**
+ * Updates the status of a reservation
+ * @param reservation_id
+ *  the id of the reservation to update
+ * @param data
+ *  the new status
+ * @param signal
+ * optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated reservation.
+ */
+
+export async function changeReservationStatus(reservation_id, data, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status: data } }),
+  };
+  return await fetchJson(url, options, {});
 }

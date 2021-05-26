@@ -7,6 +7,7 @@ import { today } from "../utils/date-time";
 import AddEditRes from "../reservations/AddEditRes";
 import AddEditTable from "../tables/AddEditTable";
 import Seat from "../reservations/Seat";
+import { listReservations, listTables } from "../utils/api";
 
 /**
  * Defines all the routes for the application.
@@ -17,9 +18,27 @@ import Seat from "../reservations/Seat";
  */
 function Routes() {
   const query = useQuery();
+  const [reservationsError, setReservationsError] = useState(null);
+  const [tablesError, setTablesError] = useState(null);
   const [reservations, setReservations] = useState();
   const [tables, setTables] = useState();
   const [date, setDate] = useState();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadDashboard, [date]);
+
+  function loadDashboard() {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    setTablesError(null);
+    listReservations({ date }, abortController.signal)
+      .then(setReservations)
+      .catch(setReservationsError);
+
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
+
+    return () => abortController.abort();
+  }
 
   useEffect(() => {
     if (query.get("date")) {
@@ -42,6 +61,7 @@ function Routes() {
           tables={tables}
           reservations={reservations}
           setTables={setTables}
+          loadDashboard={loadDashboard}
         />
       </Route>
       <Route exact={true} path="/reservations/new">
@@ -57,6 +77,9 @@ function Routes() {
           reservations={reservations}
           setReservations={setReservations}
           setTables={setTables}
+          tablesError={tablesError}
+          reservationsError={reservationsError}
+          loadDashboard={loadDashboard}
         />
       </Route>
       <Route>

@@ -1,16 +1,16 @@
 import { Fragment } from "react";
-import { useHistory } from "react-router";
-import { freeUpTable } from "../utils/api";
 
-export default function TableList({ tables }) {
-  const history = useHistory();
+import { changeReservationStatus, freeUpTable } from "../utils/api";
 
-  const handleFinish = (id) => {
+export default function TableList({ tables, loadDashboard }) {
+  const handleFinish = (table) => {
     let result = window.confirm(
       "Is this table ready to seat new guests? \n  \n This cannot be undone."
     );
-    console.log(result);
-    if (result) freeUpTable(id).then(history.go(0));
+    if (result)
+      freeUpTable(table.table_id)
+        .then(loadDashboard)
+        .catch((error) => console.log(error));
   };
 
   if (tables) {
@@ -39,7 +39,7 @@ export default function TableList({ tables }) {
                 className="btn btn-primary mt-3"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleFinish(table.table_id);
+                  handleFinish(table);
                 }}
               >
                 Finish

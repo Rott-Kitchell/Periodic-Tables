@@ -3,7 +3,12 @@ import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import { listTables, readReservation, seatResAtTable } from "../utils/api";
 
-export default function Seat({ tables, reservations, setTables }) {
+export default function Seat({
+  tables,
+  reservations,
+  setTables,
+  loadDashboard,
+}) {
   const initialState = { table_id: 0 };
   const [formData, setFormData] = useState(initialState);
   const [singleRes, setSingleRes] = useState(initialState);
@@ -14,9 +19,7 @@ export default function Seat({ tables, reservations, setTables }) {
   useEffect(() => {
     const abortController = new AbortController();
 
-    readReservation(reservation_id)
-      .then(setSingleRes)
-      .catch((error) => console.log(error));
+    readReservation(reservation_id).then(setSingleRes).catch(setError);
     listTables().then(setTables);
 
     return abortController.abort();
@@ -28,8 +31,7 @@ export default function Seat({ tables, reservations, setTables }) {
     if (formData.table_id > 0) {
       seatResAtTable(formData.table_id, reservation_id)
         .then(setFormData(initialState))
-        .then(() => listTables())
-        .then(setTables)
+        .then(loadDashboard)
         .then(history.push(`/dashboard`))
         .catch(setError);
     } else {
