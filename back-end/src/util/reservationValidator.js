@@ -2,8 +2,13 @@ function reservationValidator(data, validFields) {
   const dataMap = new Map(Object.entries(data));
   const dataKeys = Object.keys(data);
   const invalidFields = [];
-
-  if (dataKeys.includes("status")) validFields.add("status");
+  dataKeys.forEach((key) => {
+    if (
+      ["status", "reservation_id", "created_at", "updated_at"].includes(key)
+    ) {
+      validFields.add(key);
+    }
+  });
 
   dataMap.forEach((value, key) => {
     if (value === "" || !validFields.has(key)) {

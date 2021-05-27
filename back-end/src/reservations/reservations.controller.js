@@ -33,6 +33,7 @@ function hasValidFields(req, res, next) {
       message: `Invalid reservation field(s): ${invalidFields.join(", ")}`,
     });
   }
+
   const reserveDate = new Date(
       `${data.reservation_date} ${data.reservation_time} GMT-0500`
     ),
@@ -106,7 +107,7 @@ async function updateStatus(req, res, next) {
     });
   }
 
-  if (!["booked", "seated", "finished"].includes(status)) {
+  if (!["booked", "seated", "finished", "cancelled"].includes(status)) {
     return next({
       status: 400,
       message: `Status cannot be ${status}`,
@@ -123,12 +124,31 @@ async function updateStatus(req, res, next) {
   res.status(200).json({ data: newData });
 }
 
+async function update(req, res, next) {
+  const { data } = req.body;
+  const { reservation } = res.locals;
+
+  const updatedRes = {
+    ...reservation,
+    ...data,
+  };
+
+  const newData = await reservationsService.update(updatedRes);
+
+  res.status(200).json({ data: newData });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasValidFields, asyncErrorBoundary(create)],
+  create: [asyncErrorBoundary(hasValidFields), asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), read],
   updateStatus: [
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(updateStatus),
+  ],
+  update: [
+    asyncErrorBoundary(hasValidFields),
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(update),
   ],
 };

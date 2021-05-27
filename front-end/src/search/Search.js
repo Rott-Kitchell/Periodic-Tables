@@ -44,7 +44,7 @@ export default function Search() {
           id="mobile_number"
           value={searchData.mobile_number}
           placeholder="Enter a customer's phone number"
-          pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
+          maxLength={12}
           required={true}
         />
 

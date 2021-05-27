@@ -79,6 +79,7 @@ export async function listReservations(params, signal) {
  *  a promise that resolves the saved deck, which will now have an `id` property.
  */
 export async function createReservation(data, signal) {
+  console.log("create", data);
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
@@ -101,7 +102,7 @@ export async function listTables(signal) {
 
 /**
  * Updates an existing deck
- * @param updatedCard
+ * @param table_id
  *  the card to save, which must have an `id` property.
  * @param signal
  *  optional AbortController.signal
@@ -152,7 +153,9 @@ export async function createTable(data, signal) {
  */
 export async function readReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
-  return await fetchJson(url, { signal });
+  return await fetchJson(url, { signal })
+    .then(formatReservationDate)
+    .then(formatReservationTime);
 }
 
 /**
@@ -189,5 +192,25 @@ export async function changeReservationStatus(reservation_id, data, signal) {
     headers,
     body: JSON.stringify({ data: { status: data } }),
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options, {})
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+}
+
+/**
+ * Updates a existing dish
+ * @returns {Promise<[dish]>}
+ *  a promise that resolves to the updated dish.
+ */
+export async function updateReservation(data, signal) {
+  const url = `${API_BASE_URL}/reservations/${data.reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options)
+    .then(formatReservationDate)
+    .then(formatReservationTime);
 }

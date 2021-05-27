@@ -19,6 +19,7 @@ function Dashboard({
   tablesError,
   reservationsError,
   loadDashboard,
+  handleCancel,
 }) {
   const history = useHistory();
 
@@ -58,7 +59,12 @@ function Dashboard({
               Next
             </button>
           </div>
-          <ResList reservations={reservations} />
+          <ResList
+            reservations={reservations.filter(
+              (res) => res.status !== "cancelled"
+            )}
+            handleCancel={handleCancel}
+          />
         </div>
         <div className="col">
           <h4 className="mb-0 text-center">Tables</h4>

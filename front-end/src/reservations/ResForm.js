@@ -1,23 +1,19 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import ErrorAlert from "../layout/ErrorAlert";
-import { createReservation } from "../utils/api";
 import formatPhoneNumber from "../utils/phoneNumberFormatter";
-import validateDate from "./validateDate";
 
-export default function AddEditRes({ setSingleRes, singleRes }) {
-  const [error, setError] = useState(null);
-  const [dateErrors, setDateErrors] = useState([]);
-  const history = useHistory();
-  const initialFormState = {
+export default function ResForm({
+  handleSubmit,
+  handleCancel,
+  initialState = {
     first_name: "",
     last_name: "",
-    mobile_number: "",
+    mobile_number: "123-456-7890",
     reservation_date: "",
     reservation_time: "",
     people: 1,
-  };
-  const [formData, setFormData] = useState(initialFormState);
+  },
+}) {
+  const [formData, setFormData] = useState(initialState);
 
   let handleChange = ({ target }) => {
     if (target.name === "people") {
@@ -33,23 +29,6 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
     }
   };
 
-  let handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (validateDate(formData, setDateErrors)) {
-      createReservation(formData)
-        .then(setFormData({ ...initialFormState }))
-        .then(history.push(`/dashboard?date=${formData.reservation_date}`))
-        .catch(setError);
-    }
-  };
-
-  const errors = () => {
-    return dateErrors.map((dateerror, idx) => (
-      <ErrorAlert key={idx} error={dateerror} />
-    ));
-  };
-
   let phoneNumberFormatter = ({ target }) => {
     const formattedInputValue = formatPhoneNumber(target.value);
     setFormData({
@@ -60,10 +39,12 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
 
   return (
     <div>
-      <h2>New Reservation</h2>
-      <ErrorAlert error={error} />
-      {errors()}
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(formData);
+        }}
+      >
         <label className="form-label" htmlFor="first_name">
           First name:&nbsp;
         </label>
@@ -73,6 +54,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           id="first_name"
           name="first_name"
           value={formData.first_name}
+          placeholder={formData.first_name}
           required={true}
         />
         <label className="form-label" htmlFor="last_name">
@@ -84,6 +66,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           id="last_name"
           name="last_name"
           value={formData.last_name}
+          placeholder={formData.last_name}
           required={true}
         />
         <label className="form-label" htmlFor="mobile_number">
@@ -95,7 +78,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           name="mobile_number"
           id="mobile_number"
           value={formData.mobile_number}
-          placeholder="123-456-7890"
+          placeholder={formData.mobile_number}
           pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           required={true}
         />
@@ -109,6 +92,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           name="reservation_date"
           id="reservation_date"
           value={formData.reservation_date}
+          placeholder={formData.reservation_date}
           required={true}
         />
         <label className="form-label" htmlFor="reservation_time">
@@ -121,6 +105,7 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           name="reservation_time"
           id="reservation_time"
           value={formData.reservation_time}
+          placeholder={formData.reservation_time}
           required={true}
         />
         <label className="form-label" htmlFor="people">
@@ -133,10 +118,15 @@ export default function AddEditRes({ setSingleRes, singleRes }) {
           name="people"
           id="people"
           value={formData.people}
+          placeholder={formData.people}
           required={true}
         />
         <br />
-        <button className="btn btn-secondary" onClick={history.goBack}>
+        <button
+          className="btn btn-secondary"
+          onClick={handleCancel}
+          type="cancel"
+        >
           Cancel
         </button>
         <button className="btn btn-primary" type="submit">
