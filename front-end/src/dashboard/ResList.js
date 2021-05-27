@@ -52,6 +52,6 @@ export default function ResList({ reservations }) {
       );
     });
   } else {
-    return <div>No reservations on this date</div>;
+    return <div>No reservations found</div>;
   }
 }

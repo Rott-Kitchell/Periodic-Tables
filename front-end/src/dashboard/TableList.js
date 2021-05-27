@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import { changeReservationStatus, freeUpTable } from "../utils/api";
+import { freeUpTable } from "../utils/api";
 
 export default function TableList({ tables, loadDashboard }) {
   const handleFinish = (table) => {

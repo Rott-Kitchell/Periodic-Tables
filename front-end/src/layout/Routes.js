@@ -8,6 +8,7 @@ import AddEditRes from "../reservations/AddEditRes";
 import AddEditTable from "../tables/AddEditTable";
 import Seat from "../reservations/Seat";
 import { listReservations, listTables } from "../utils/api";
+import Search from "../search/Search";
 
 /**
  * Defines all the routes for the application.
@@ -66,6 +67,9 @@ function Routes() {
       </Route>
       <Route exact={true} path="/reservations/new">
         <AddEditRes />
+      </Route>
+      <Route exact={true} path="/search">
+        <Search />
       </Route>
       <Route exact={true} path="/tables/new">
         <AddEditTable />

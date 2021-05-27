@@ -78,7 +78,8 @@ async function list(req, res, next) {
   const reservationDate = req.query.date;
   const data = reservationDate
     ? await reservationsService.listByDate(reservationDate)
-    : await reservationsService.list();
+    : await reservationsService.search(req.query.mobile_number);
+
   res.json({ data });
 }
 

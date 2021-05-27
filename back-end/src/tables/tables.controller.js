@@ -93,7 +93,6 @@ async function create(req, res) {
 
 async function freeUpTable(req, res, next) {
   const { table } = res.locals;
-  console.log(table);
 
   if (!table.reservation_id) {
     return next({
