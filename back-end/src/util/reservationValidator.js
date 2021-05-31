@@ -55,14 +55,4 @@ function reservationValidator(data) {
   return invalidFields;
 }
 
-// const data = {
-//   first_name: "first",
-//   last_name: "",
-//   mobile_number: "800-555-1212",
-//   reservation_date: "2025-01-01",
-//   reservation_time: "13:30",
-//   people: 1,
-// };
-//console.log(reservationValidator(data));
-
 module.exports = reservationValidator;
