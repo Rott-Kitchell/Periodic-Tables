@@ -5,7 +5,7 @@ function read(tableId) {
 }
 
 function list() {
-  return knex("tables").select("*").orderBy("table_name");
+  return knex("tables").select("*").orderBy("table_name", "asc");
 }
 
 function update(updatedTable) {
