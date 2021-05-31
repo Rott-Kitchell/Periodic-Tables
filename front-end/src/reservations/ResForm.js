@@ -124,7 +124,10 @@ export default function ResForm({
         <br />
         <button
           className="btn btn-secondary"
-          onClick={handleCancel}
+          onClick={(e) => {
+            e.preventDefault();
+            handleCancel();
+          }}
           type="cancel"
         >
           Cancel

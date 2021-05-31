@@ -2,14 +2,14 @@ import { Fragment } from "react";
 
 import { freeUpTable } from "../utils/api";
 
-export default function TableList({ tables, loadDashboard }) {
+export default function TableList({ tables }) {
   const handleFinish = (table) => {
     let result = window.confirm(
       "Is this table ready to seat new guests? \n  \n This cannot be undone."
     );
     if (result)
       freeUpTable(table.table_id)
-        .then(loadDashboard)
+        .then(() => window.location.reload())
         .catch((error) => console.log(error));
   };
 

@@ -79,7 +79,6 @@ export async function listReservations(params, signal) {
  *  a promise that resolves the saved deck, which will now have an `id` property.
  */
 export async function createReservation(data, signal) {
-  console.log("create", data);
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",

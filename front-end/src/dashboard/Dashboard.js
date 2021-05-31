@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { next, today, previous } from "../utils/date-time";
 import ResList from "./ResList";
 import TableList from "./TableList";
+import { Fragment } from "react";
 
 /**
  * Defines the dashboard page.
@@ -14,8 +15,6 @@ function Dashboard({
   date,
   tables,
   reservations,
-  setReservations,
-  setTables,
   tablesError,
   reservationsError,
   loadDashboard,
@@ -59,12 +58,16 @@ function Dashboard({
               Next
             </button>
           </div>
-          <ResList
-            reservations={reservations.filter(
-              (res) => res.status !== "cancelled"
-            )}
-            handleCancel={handleCancel}
-          />
+          {reservations ? (
+            <ResList
+              reservations={reservations.filter(
+                (res) => res.status !== "cancelled"
+              )}
+              handleCancel={handleCancel}
+            />
+          ) : (
+            <Fragment />
+          )}
         </div>
         <div className="col">
           <h4 className="mb-0 text-center">Tables</h4>

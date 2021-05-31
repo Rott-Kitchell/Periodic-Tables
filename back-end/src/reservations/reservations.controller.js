@@ -15,18 +15,11 @@ async function reservationExists(req, res, next) {
   });
 }
 
-const validFields = new Set([
-  "first_name",
-  "last_name",
-  "mobile_number",
-  "reservation_date",
-  "reservation_time",
-  "people",
-]);
-
 function hasValidFields(req, res, next) {
   const { data = {} } = req.body;
-  const invalidFields = reservationValidator(data, validFields);
+
+  const invalidFields = reservationValidator(data);
+
   if (invalidFields.length) {
     return next({
       status: 400,

@@ -7,7 +7,7 @@ export default function Seat({
   tables,
   reservations,
   setTables,
-  loadDashboard,
+  setReservations,
 }) {
   const initialState = { table_id: 0 };
   const [formData, setFormData] = useState(initialState);
@@ -30,12 +30,13 @@ export default function Seat({
 
     if (formData.table_id > 0) {
       seatResAtTable(formData.table_id, reservation_id)
-        .then(setFormData(initialState))
-        .then(loadDashboard)
-        .then(history.push(`/dashboard`))
+        //.then(() => listReservations({}))
+        .then(() =>
+          history.push(`/dashboard?date=${singleRes.reservation_date}`)
+        )
         .catch(setError);
     } else {
-      throw new Error({ message: "Not a valid table" });
+      setError({ message: "Not a valid table" });
     }
   };
 
@@ -73,13 +74,19 @@ export default function Seat({
           Select Table:&nbsp;
         </label>
         <select className="form-select" name="table_id" onChange={handleChange}>
-          <option defaultValue="">Please choose table:</option>
+          <option defaultValue={0}>Please choose table:</option>
           {tableMenu}
         </select>
         <button className="btn btn-primary" type="submit">
           Submit
         </button>
-        <button className="btn btn-secondary" onClick={history.goBack}>
+        <button
+          className="btn btn-secondary"
+          onClick={(e) => {
+            e.preventDefault();
+            history.goBack();
+          }}
+        >
           Cancel
         </button>
       </form>
