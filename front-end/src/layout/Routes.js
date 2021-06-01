@@ -10,7 +10,7 @@ import {
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
-import AddEditTable from "../tables/AddEditTable";
+import AddTable from "../tables/AddTable";
 import Seat from "../reservations/Seat";
 import {
   changeReservationStatus,
@@ -21,13 +21,6 @@ import Search from "../search/Search";
 import AddRes from "../reservations/AddRes";
 import EditRes from "../reservations/EditRes";
 
-/**
- * Defines all the routes for the application.
- *
- * You will need to make changes to this file.
- *
- * @returns {JSX.Element}
- */
 function Routes() {
   const history = useHistory();
   const query = useQuery();
@@ -37,16 +30,6 @@ function Routes() {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [date, setDate] = useState("");
-
-  // useEffect(() => {
-  //   setDate("");
-  //   if (query.get("date")) {
-  //     setDate(query.get("date"));
-  //   } else {
-  //     if (location.pathname === "/dashboard")
-  //       history.push(`/dashboard?date=${today()}`);
-  //   }
-  // }, [query, history, location.pathname]);
 
   useEffect(() => {
     setDate("");
@@ -121,7 +104,7 @@ function Routes() {
         <Search />
       </Route>
       <Route exact={true} path="/tables/new">
-        <AddEditTable tables={tables} setTables={setTables} />
+        <AddTable tables={tables} setTables={setTables} />
       </Route>
       <Route path="/dashboard">
         <Dashboard

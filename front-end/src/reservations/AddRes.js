@@ -7,13 +7,14 @@ import validateDate from "./validateDate";
 
 export default function AddRes({ reservations, setReservations }) {
   const history = useHistory();
-  const [error, setError] = useState(null);
+  const [errorAlerts, setErrorAlerts] = useState([]);
   let handleSubmit = (res) => {
     const abortController = new AbortController();
-    if (validateDate(res, setError)) {
+    setErrorAlerts([]);
+    if (validateDate(res, setErrorAlerts)) {
       createReservation(res)
         .then(history.push(`/dashboard?date=${res.reservation_date}`))
-        .catch(setError);
+        .catch(setErrorAlerts);
     }
     return () => abortController.abort();
   };
@@ -22,10 +23,21 @@ export default function AddRes({ reservations, setReservations }) {
     history.goBack();
   }
 
+  let errors;
+  if (errorAlerts.length >= 1) {
+    errors = errorAlerts.map((error, i) => {
+      return (
+        <div key={i}>
+          <ErrorAlert error={error} />
+        </div>
+      );
+    });
+  }
+
   return (
     <main>
-      <h1>Create Reservation</h1>
-      <ErrorAlert error={error} />
+      <h1 className="text-center">Create Reservation</h1>
+      {errors}
       <ResForm handleSubmit={handleSubmit} handleCancel={handleCancel} />
     </main>
   );

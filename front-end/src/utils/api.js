@@ -54,6 +54,9 @@ async function fetchJson(url, options, onCancel) {
 
 /**
  * Retrieves all existing reservation.
+ *
+ * @param signal
+ *  optional AbortController.signal
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
@@ -70,13 +73,13 @@ export async function listReservations(params, signal) {
 
 /**
  * Saves reservation to the database.
- * There is no validation done on the deck object, any object will be saved.
- * @param reservation
+ 
+ * @param data
  *  the deck to save, which must not have an `id` property
  * @param signal
  *  optional AbortController.signal
  * @returns {Promise<reservartion>}
- *  a promise that resolves the saved deck, which will now have an `id` property.
+ *  a promise that resolves the saved reservation, which will now have an `id` property and the status "booked".
  */
 export async function createReservation(data, signal) {
   const url = `${API_BASE_URL}/reservations`;
@@ -91,6 +94,8 @@ export async function createReservation(data, signal) {
 
 /**
  * Retrieves all existing tables
+ * @param signal
+ *  optional AbortController.signal
  * @returns {Promise<[table]>}
  *  a promise that resolves to a possibly empty array of tables saved in the database.
  */
@@ -100,13 +105,14 @@ export async function listTables(signal) {
 }
 
 /**
- * Updates an existing deck
+ * Updates an existing table by attaching a reservation to it and changing the reservation's status to
+ * "seated"
  * @param table_id
- *  the card to save, which must have an `id` property.
- * @param signal
- *  optional AbortController.signal
+ *  the table to save, which must have an `id` property.
+ * @param data
+ *  the "reservation_id" to attach to the table
  * @returns {Promise<Error|*>}
- *  a promise that resolves to the updated card.
+ *  a promise that resolves to the updated table.
  */
 
 export async function seatResAtTable(table_id, data) {
@@ -121,10 +127,8 @@ export async function seatResAtTable(table_id, data) {
 
 /**
  * Creates a new table.
-
- * @param table
- *  the card to create, which must not have an `id` property
- 
+ * @param data
+ *  the table to create, which must not have an `id` property
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the new table, which will have an `id` property.
  */
@@ -158,7 +162,7 @@ export async function readReservation(reservationId, signal) {
 }
 
 /**
- * Deletes the card with the specified `table_id`. since we already have a PUT method in seatResAtTAble, we are using a DELETE with this one
+ * Removes the "reservation_id" from the specified `table_id`. Since we already have a PUT method in seatResAtTAble, we are using a DELETE with this one
  * @param table_id
  *  the id of the table to free up
  * @param signal
@@ -197,9 +201,11 @@ export async function changeReservationStatus(reservation_id, data, signal) {
 }
 
 /**
- * Updates a existing dish
+ * Updates a existing reservation
+ *  @param data
+ *  the information of the reservation to update, which must have an `id` property
  * @returns {Promise<[dish]>}
- *  a promise that resolves to the updated dish.
+ *  a promise that resolves to the updated reservation.
  */
 export async function updateReservation(data, signal) {
   const url = `${API_BASE_URL}/reservations/${data.reservation_id}`;

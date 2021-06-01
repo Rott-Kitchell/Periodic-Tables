@@ -46,15 +46,14 @@ export default function Search() {
           placeholder="Enter a customer's phone number"
           maxLength={12}
           required={true}
-        />
-
-        <br />
-
-        <button className="btn btn-primary" type="submit">
+        />{" "}
+        &nbsp;
+        <button className="btn btn-primary btn-sm mb-1" type="submit">
           Find
         </button>
       </form>
-      <div hidden={hideThisLine}>
+
+      <div className="row row-col-1 row-col-xl-2" hidden={hideThisLine}>
         {searchRes.length !== 0 ? (
           <ResList reservations={searchRes} />
         ) : (

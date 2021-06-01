@@ -39,7 +39,7 @@ export default function EditRes({ reservations, setReservations }) {
     history.goBack();
   }
   let errors;
-  if (errorAlerts.length > 1)
+  if (errorAlerts.length >= 1) {
     errors = errorAlerts.map((error, i) => {
       return (
         <div key={i}>
@@ -47,6 +47,7 @@ export default function EditRes({ reservations, setReservations }) {
         </div>
       );
     });
+  }
 
   const child = reservation.reservation_id ? (
     <ResForm
@@ -59,7 +60,7 @@ export default function EditRes({ reservations, setReservations }) {
   );
   return (
     <main>
-      <h1>Edit Reservation</h1>
+      <h1 className="text-center">Edit Reservation</h1>
       {errors}
       {child}
     </main>

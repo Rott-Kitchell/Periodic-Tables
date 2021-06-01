@@ -5,12 +5,6 @@ import ResList from "./ResList";
 import TableList from "./TableList";
 import { Fragment } from "react";
 
-/**
- * Defines the dashboard page.
- * @param date
- *  the date for which the user wants to view reservations.
- * @returns {JSX.Element}
- */
 function Dashboard({
   date,
   tables,
@@ -28,13 +22,13 @@ function Dashboard({
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tablesError} />
       <div className="row">
-        <div className="col">
-          <h4 className="mb-0 text-center">Reservations for {date}</h4>
-          <div className="text-center">
+        <div className="col-md-6 col-sm-12">
+          <h4 className="mb-1 text-center">Reservations for {date}</h4>
+          <div className="text-center mb-1">
             <div
-              className="btn-group btn-group-lg"
+              className="btn-group btn-group"
               role="group"
-              aria-label="Basic example"
+              aria-label="Date Buttons"
             ></div>
             <button
               type="button"
@@ -58,20 +52,24 @@ function Dashboard({
               Next
             </button>
           </div>
-          {reservations ? (
-            <ResList
-              reservations={reservations.filter(
-                (res) => res.status !== "cancelled"
-              )}
-              handleCancel={handleCancel}
-            />
-          ) : (
-            <Fragment />
-          )}
+          <div className="row row-col-1 row-col-xl-2">
+            {reservations ? (
+              <ResList
+                reservations={reservations.filter(
+                  (res) => res.status !== "cancelled"
+                )}
+                handleCancel={handleCancel}
+              />
+            ) : (
+              <Fragment />
+            )}
+          </div>
         </div>
-        <div className="col">
-          <h4 className="mb-0 text-center">Tables</h4>
-          <TableList tables={tables} loadDashboard={loadDashboard} />
+        <div className="col-md-6  col-sm-12">
+          <h4 className="mb-1 text-center">Tables</h4>
+          <div className="row row-col-1 row-col-xl-2">
+            <TableList tables={tables} />
+          </div>
         </div>
       </div>
     </main>
