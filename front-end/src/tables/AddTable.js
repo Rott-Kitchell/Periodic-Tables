@@ -30,11 +30,13 @@ export default function AddTable() {
 
   let handleSubmit = (event) => {
     event.preventDefault();
+    const abortController = new AbortController();
     if (validateTable(formData, setTableErrors))
-      createTable(formData)
+      createTable(formData, abortController.signal)
         .then(setFormData({ ...initialFormState }))
         .then(history.push(`/dashboard`))
         .catch(setError);
+    return () => abortController.abort();
   };
 
   const errors = () => {

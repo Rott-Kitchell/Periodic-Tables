@@ -11,8 +11,8 @@ function Dashboard({
   reservations,
   tablesError,
   reservationsError,
-  loadDashboard,
   handleCancel,
+  setTablesError,
 }) {
   const history = useHistory();
 
@@ -68,7 +68,7 @@ function Dashboard({
         <div className="col-md-6  col-sm-12">
           <h4 className="mb-1 text-center">Tables</h4>
           <div className="row row-col-1 row-col-xl-2">
-            <TableList tables={tables} />
+            <TableList tables={tables} setTablesError={setTablesError} />
           </div>
         </div>
       </div>

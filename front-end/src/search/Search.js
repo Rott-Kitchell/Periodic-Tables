@@ -20,12 +20,15 @@ export default function Search() {
 
   let handleFind = (event) => {
     event.preventDefault();
+    const abortController = new AbortController();
     const { mobile_number } = searchData;
 
-    listReservations({ mobile_number })
+    listReservations({ mobile_number }, abortController.signal)
       .then(setSearchRes)
       .then(() => setHideThisLine(false))
       .catch(setError);
+
+    return () => abortController.abort();
   };
 
   return (

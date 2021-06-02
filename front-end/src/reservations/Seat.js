@@ -20,17 +20,17 @@ export default function Seat({
     const abortController = new AbortController();
 
     readReservation(reservation_id).then(setSingleRes).catch(setError);
-    listTables().then(setTables);
+
+    listTables().then(setTables).catch(setError);
 
     return abortController.abort();
   }, [reservation_id, setTables]);
 
   let handleSubmit = (event) => {
     event.preventDefault();
-
+    const abortController = new AbortController();
     if (formData.table_id > 0) {
       seatResAtTable(formData.table_id, reservation_id)
-        //.then(() => listReservations({}))
         .then(() =>
           history.push(`/dashboard?date=${singleRes.reservation_date}`)
         )
@@ -38,6 +38,7 @@ export default function Seat({
     } else {
       setError({ message: "Not a valid table" });
     }
+    return () => abortController.abort();
   };
 
   const handleChange = ({ target }) => {

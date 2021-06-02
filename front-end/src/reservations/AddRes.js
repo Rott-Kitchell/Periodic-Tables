@@ -8,11 +8,12 @@ import validateDate from "./validateDate";
 export default function AddRes({ reservations, setReservations }) {
   const history = useHistory();
   const [errorAlerts, setErrorAlerts] = useState([]);
+
   let handleSubmit = (res) => {
     const abortController = new AbortController();
     setErrorAlerts([]);
     if (validateDate(res, setErrorAlerts)) {
-      createReservation(res)
+      createReservation(res, abortController.signal)
         .then(history.push(`/dashboard?date=${res.reservation_date}`))
         .catch(setErrorAlerts);
     }

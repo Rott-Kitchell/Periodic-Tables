@@ -22,16 +22,20 @@ export default function EditRes({ reservations, setReservations }) {
   }, [reservation_id]);
 
   function handleSubmit(updatedRes) {
+    const abortController = new AbortController();
     setErrorAlerts([]);
     if (validateDate(updatedRes, setErrorAlerts)) {
-      updateReservation(formatReservationTime(updatedRes))
+      updateReservation(
+        formatReservationTime(updatedRes),
+        abortController.signal
+      )
         .then(() =>
           history.push(`/dashboard?date=${updatedRes.reservation_date}`)
         )
         .catch((e) => {
-          console.log(e);
           setErrorAlerts(e);
         });
+      return () => abortController.abort();
     }
   }
 

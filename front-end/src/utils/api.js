@@ -155,6 +155,7 @@ export async function createTable(data, signal) {
  *  a promise that resolves to the saved reservation.
  */
 export async function readReservation(reservationId, signal) {
+  console.log(reservationId);
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
   return await fetchJson(url, { signal })
     .then(formatReservationDate)
@@ -194,6 +195,7 @@ export async function changeReservationStatus(reservation_id, data, signal) {
     method: "PUT",
     headers,
     body: JSON.stringify({ data: { status: data } }),
+    signal,
   };
   return await fetchJson(url, options, {})
     .then(formatReservationDate)
@@ -204,7 +206,7 @@ export async function changeReservationStatus(reservation_id, data, signal) {
  * Updates a existing reservation
  *  @param data
  *  the information of the reservation to update, which must have an `id` property
- * @returns {Promise<[dish]>}
+ * @returns {Promise<[signal]>}
  *  a promise that resolves to the updated reservation.
  */
 export async function updateReservation(data, signal) {

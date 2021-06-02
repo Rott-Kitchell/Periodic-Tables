@@ -114,6 +114,7 @@ function Routes() {
           tablesError={tablesError}
           reservationsError={reservationsError}
           handleCancel={handleCancel}
+          setTablesError={setTablesError}
         />
       </Route>
       <Route>
