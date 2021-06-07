@@ -316,17 +316,17 @@ If a reservation is booked, and a table has no party at it currently, the user c
 
 ![Seat Form](./production-screenshots/seat-table.png)
 
-### Dr. Strange is Seated at Table #1
+### Customer is Seated at Table #1
 
-![Dr. Strange Seated](./production-screenshots/dr-strange-seated.png)
+![Customer Seated](./production-screenshots/customer-seated.png)
 
-### Dr. Strange is Finished Eating, So the Table can be Cleared
+### Customer is Finished Eating, So the Table can be Cleared
 
-![Strange Finished](./production-screenshots/dr-strange-finished.png)
+![Customer Finished](./production-screenshots/customer-finished.png)
 
-### Dr. Strange's Reservation is Removed from Dashboard
+### Customer's Reservation is Removed from Dashboard
 
-![Reservation Is Done](./production-screenshots/dr-strange-reservation-cleared.png)
+![Reservation Is Done](./production-screenshots/customer-reservation-cleared.png)
 
 <br>
 
