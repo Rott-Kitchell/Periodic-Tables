@@ -276,11 +276,11 @@ After the reservation is submitted, the React application will go back to the da
 
 ### Before
 
-![New Reservation Screenshot](./production-screenshots/new-reservation.png)
+![New Reservation Screenshot](./production-screenshots/new-reservation.PNG)
 
 ### After
 
-![New ReservationSubmission Screenshot](./production-screenshots/new-reservation-submitted.png)
+![New ReservationSubmission Screenshot](./production-screenshots/new-reservation-submitted.PNG)
 
 <br>
 
@@ -294,11 +294,11 @@ After the table is submitting, the React application will go back to the dashboa
 
 ### Before
 
-![New Table](./production-screenshots/new-table.png)
+![New Table](./production-screenshots/new-table.PNG)
 
 ### After
 
-![New Table Submitted](./production-screenshots/new-table-submitted.png)
+![New Table Submitted](./production-screenshots/new-table-submitted.PNG)
 
 <br>
 
@@ -310,23 +310,23 @@ If a reservation is booked, and a table has no party at it currently, the user c
 
 ### Before Seat Button is Clicked
 
-![Before Seat](./production-screenshots/before-seat-button.png)
+![Before Seat](./production-screenshots/before-seat-button.PNG)
 
 ### Seat Form
 
-![Seat Form](./production-screenshots/seat-table.png)
+![Seat Form](./production-screenshots/seat-table.PNG)
 
 ### Customer is Seated at Table #1
 
-![Customer Seated](./production-screenshots/customer-seated.png)
+![Customer Seated](./production-screenshots/customer-seated.PNG)
 
 ### Customer is Finished Eating, So the Table can be Cleared
 
-![Customer Finished](./production-screenshots/customer-finished.png)
+![Customer Finished](./production-screenshots/customer-finished.PNG)
 
 ### Customer's Reservation is Removed from Dashboard
 
-![Reservation Is Done](./production-screenshots/customer-reservation-cleared.png)
+![Reservation Is Done](./production-screenshots/customer-reservation-cleared.PNG)
 
 <br>
 
@@ -338,11 +338,11 @@ The Search component will allow the user to search for reservations by customer 
 
 ### Search Matches Reservation Number
 
-![Search Match](./production-screenshots/search-matches-reservation-number.png)
+![Search Match](./production-screenshots/search-matches-reservation-number.PNG)
 
 ### No results
 
-![No Matches](./production-screenshots/no-reservations-found-when-no-numbers-match.png)
+![No Matches](./production-screenshots/no-reservations-found-when-no-numbers-match.PNG)
 
 <br>
 
