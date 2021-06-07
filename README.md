@@ -23,8 +23,8 @@ Returns a list of reservations that at least partially match the number query.
 [
     {
         reservation_id: 22,
-        first_name: "Austin",
-        last_name: "Jones",
+        first_name: "Keith",
+        last_name: "Buckley",
         mobile_number: "777-888-9999",
         reservation_date: "2022-03-12",
         reservation_time: "11:30",
