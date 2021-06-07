@@ -254,7 +254,7 @@ The react application for this project has three forms, one main dashboard page,
 
 By default, the /dashboard route displays all tables and the reservations that are schedules for the current date. If a reservation has been completed or canceled, it will not be displayed.
 
-![Dashboard Screenshot](./production-screenshots/reservations-for-date.png)
+![Dashboard Screenshot](./production-screenshots/reservations-for-date.PNG)
 
 <br>
 
