@@ -358,7 +358,7 @@ Facebook React.js is used on the frontend to create a responsive, dynamic web ap
 
 # Installation Instructions
 
-In order to effectively install and use this application locally, you will need to either clone the repo from this [GitHub](https://github.com/austinhjones3/periodic-tables) or download the zip. You will then need to navigate to the top level of the project in your bash terminal and:
+In order to effectively install and use this application locally, you will need to either clone the repo from this [GitHub](https://github.com/rott-kitchell/periodic-tables) or download the zip. You will then need to navigate to the top level of the project in your bash terminal and:
 
 1. run `npm i`
 2. `cd front-end && npm i`
