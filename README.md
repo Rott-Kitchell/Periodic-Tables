@@ -362,7 +362,7 @@ In order to effectively install and use this application locally, you will need 
 
 1. run `npm i`
 2. `cd front-end && npm i`
-3. `cd ../back-end && npm i`
+3. `cd back-end && npm i`
 
 Now that you have all of the scripts installed, you will need two different PostgreSQL database instances to either run the application locally or test it.
 
